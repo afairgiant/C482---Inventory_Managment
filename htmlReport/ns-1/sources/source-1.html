@@ -1,0 +1,273 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > AddPartController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script src="../../js/highlight.min.js" type="text/javascript"></script>
+  <script src="../../js/highlightjs-line-numbers.min.js" type="text/javascript"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">controller</a>
+</div>
+
+<h1>Coverage Summary for Class: AddPartController (controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AddPartController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    71.4%
+  </span>
+  <span class="absValue">
+    (5/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    29%
+  </span>
+  <span class="absValue">
+    (9/31)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package controller;
+&nbsp;
+&nbsp;
+&nbsp;import javafx.collections.ObservableList;
+&nbsp;import javafx.event.ActionEvent;
+&nbsp;import javafx.fxml.FXML;
+&nbsp;import javafx.fxml.FXMLLoader;
+&nbsp;import javafx.fxml.Initializable;
+&nbsp;import javafx.scene.Parent;
+&nbsp;import javafx.scene.Scene;
+&nbsp;import javafx.scene.control.*;
+&nbsp;import javafx.stage.Stage;
+&nbsp;import model.Inhouse;
+&nbsp;import model.Inventory;
+&nbsp;import model.Outsourced;
+&nbsp;import model.Part;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;import java.net.URL;
+&nbsp;import java.util.ResourceBundle;
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;public class AddPartController implements Initializable {</b>
+&nbsp;
+&nbsp;    Stage stage;
+&nbsp;    Parent scene;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * FXML id selectors
+&nbsp;     */
+&nbsp;    @FXML
+&nbsp;    private Button cancelBtn;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private ToggleGroup manufacturerGroup;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private RadioButton inhouseRBtn;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private Label manufacturerLabel;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private TextField manufacturerTxt;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private RadioButton outsourcedRBtn;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private TextField partIdTxt;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private TextField partInvTxt;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private TextField partMaxTxt;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private TextField partMinTxt;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private TextField partNameTxt;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private TextField partPriceTxt;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private Button savePartBtn;
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * //TODO
+&nbsp;     * @param event
+&nbsp;     * @throws IOException
+&nbsp;     */
+&nbsp;    @FXML
+&nbsp;    public void onActionEventSavePart(ActionEvent event) throws IOException {
+&nbsp;        //TODO - Min, max and stock checks. after that passes, do the radiobutton checks then add the part
+&nbsp;        try {
+&nbsp;            //TODO - a loop for adding part ID, here or in inventory class?
+&nbsp;            //TODO - loop that takes the largest ID number from allParts list and adds +1
+&nbsp;
+<b class="nc">&nbsp;            int id = 0;</b>
+<b class="nc">&nbsp;            String name = partNameTxt.getText();</b>
+<b class="nc">&nbsp;            int stock = Integer.parseInt(partInvTxt.getText());</b>
+<b class="nc">&nbsp;            double price = Double.parseDouble(partPriceTxt.getText());</b>
+<b class="nc">&nbsp;            int min = Integer.parseInt(partMinTxt.getText());</b>
+<b class="nc">&nbsp;            int max = Integer.parseInt(partMaxTxt.getText());</b>
+&nbsp;
+&nbsp;            int machineId;
+&nbsp;            String companyName;
+&nbsp;
+&nbsp;            //If the Inhouse RBtn is selected add the part to Inventory as Inhouse
+<b class="nc">&nbsp;            if (inhouseRBtn.isSelected()){</b>
+<b class="nc">&nbsp;                machineId = Integer.parseInt(manufacturerTxt.getText());</b>
+<b class="nc">&nbsp;                Part addPart = new Inhouse(id, name, price, stock, min, max, machineId);</b>
+<b class="nc">&nbsp;                Inventory.addPart(addPart);</b>
+&nbsp;
+&nbsp;            //If the outsourcedRBtn is selected, add the part to Inventory as Outsourced
+&nbsp;            }
+<b class="nc">&nbsp;            if (outsourcedRBtn.isSelected()){</b>
+<b class="nc">&nbsp;                companyName = manufacturerTxt.getText();</b>
+<b class="nc">&nbsp;                Part addPart = new Outsourced(id, name, price, stock, min, max, companyName);</b>
+<b class="nc">&nbsp;                Inventory.addPart(addPart);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            //Load MainForm after save
+&nbsp;            /*Stage stage = (Stage) ((Button) ActionEvent.getSource()).getScene().getWindow();
+&nbsp;            Object scene = FXMLLoader.load(getClass().getResource(&quot;/MainForm.fxml&quot;));
+&nbsp;            stage.setScene(new Scene((Parent) scene));
+&nbsp;            stage.show();
+&nbsp;            */
+&nbsp;        //If all else fails, throw an error.
+<b class="nc">&nbsp;        } catch (NumberFormatException e) {</b>
+&nbsp;            // TODO: handle exception
+<b class="nc">&nbsp;            Alert alert = new Alert(Alert.AlertType.ERROR);</b>
+<b class="nc">&nbsp;            alert.setTitle(&quot;Error&quot;);</b>
+<b class="nc">&nbsp;            alert.setHeaderText(&quot;Invalid Entry&quot;);</b>
+<b class="nc">&nbsp;            alert.setContentText(&quot;&quot;&quot;</b>
+&nbsp;                        One of the fields you entered was invalid.\s
+&nbsp;                         +Name: Accepts Letters, Numbers and Symbols.\s
+&nbsp;                         +Inventory: NUMBERS ONLY.\s
+&nbsp;                         +Min: NUMBERS ONLY.\s
+&nbsp;                         +Max: NUMBERS ONLY.\s
+&nbsp;                        &quot;&quot;&quot;);
+<b class="nc">&nbsp;            alert.show();</b>
+&nbsp;            return;
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;    /**
+&nbsp;     * InHouse Radio Btn
+&nbsp;     *  @param event Sets label to &quot;Machine ID&quot;
+&nbsp;     */
+&nbsp;    @FXML
+&nbsp;    public void actionLoadInHouse(ActionEvent event) {
+<b class="fc">&nbsp;        manufacturerLabel.setText(&quot;Machine ID&quot;);</b>
+&nbsp;    }
+&nbsp;    /**
+&nbsp;     * Outsourced Radio Btn
+&nbsp;     * @param event sets label to &quot;Company Name&quot;
+&nbsp;     */
+&nbsp;    @FXML
+&nbsp;    public void actionLoadOutsourced(ActionEvent event) {
+<b class="fc">&nbsp;        manufacturerLabel.setText(&quot;Company Name&quot;);</b>
+&nbsp;    }
+&nbsp;    /**
+&nbsp;     * @param event save the new part
+&nbsp;     * @throws IOException cannot locate MainForm.fxml
+&nbsp;     */
+&nbsp;    public void actionSavePart(ActionEvent event) throws IOException{
+<b class="nc">&nbsp;    }</b>
+&nbsp;    /**
+&nbsp;     * @param event closes addPart view and goes back to main menu
+&nbsp;     * @throws IOException if MainForm.fxml isn&#39;t found
+&nbsp;     */
+&nbsp;    @FXML
+&nbsp;    public void actionDisplayMain(ActionEvent event) throws IOException {
+<b class="fc">&nbsp;        System.out.println(&quot;Log - Add Part: Clicked cancel button&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();</b>
+<b class="fc">&nbsp;        scene = FXMLLoader.load(getClass().getResource(&quot;/MainForm.fxml&quot;));</b>
+<b class="fc">&nbsp;        stage.setScene(new Scene(scene));</b>
+<b class="fc">&nbsp;        stage.show();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void initialize(URL url, ResourceBundle resourceBundle) {
+&nbsp;
+<b class="fc">&nbsp;    }</b>
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-01-13 20:09</div>
+</div>
+</body>
+</html>
